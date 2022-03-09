@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../controller/controller.dart';
 import '../models/song.dart';
 import '../widget/fetch_data.dart';
+import '../widget/playing/titleBar.dart';
 
 class PlayView extends StatefulWidget {
   const PlayView({Key? key}) : super(key: key);
@@ -22,11 +23,11 @@ class _PlayViewState extends State<PlayView> {
     final Controller c = Get.put(Controller());
     return Scaffold(
         body: Container(
-      child: Column(
-        children: [
-          Obx(() => Text(c.song.value.title)),
-          Obx(() => Text(c.song.value.singer))
-        ],
+      child: const Scaffold(
+        appBar: TitleBar(),
+
+        // Obx(() => Text(c.song.value.title)),
+        // Obx(() => Text(c.song.value.singer))
       ),
     )
         // child: Obx(() {
