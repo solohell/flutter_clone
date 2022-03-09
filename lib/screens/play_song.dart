@@ -1,3 +1,4 @@
+import 'package:flo_app/widget/playing/playinfo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -25,7 +26,7 @@ class _PlayViewState extends State<PlayView> {
         body: Container(
       child: const Scaffold(
         appBar: TitleBar(),
-
+        body: PlayInfo(),
         // Obx(() => Text(c.song.value.title)),
         // Obx(() => Text(c.song.value.singer))
       ),
