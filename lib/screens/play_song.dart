@@ -22,24 +22,11 @@ class _PlayViewState extends State<PlayView> {
   @override
   Widget build(BuildContext context) {
     final Controller c = Get.put(Controller());
-    return Scaffold(
-        body: Container(
-      child: const Scaffold(
-        appBar: TitleBar(),
-        body: PlayInfo(),
-        // Obx(() => Text(c.song.value.title)),
-        // Obx(() => Text(c.song.value.singer))
-      ),
-    )
-        // child: Obx(() {
-        //   // return ListView.builder(
-        //   //   itemCount: c.song.length,
-        //   //   itemBuilder: (BuildContext context, int index) {
-        //   //     Text('hihihi')
-        //   //    },
-        //   // );
-        // }),
-        );
+    return const Scaffold(
+      appBar: TitleBar(),
+      body: PlayInfo(),
+      backgroundColor: Colors.black,
+    );
   }
 }
 
