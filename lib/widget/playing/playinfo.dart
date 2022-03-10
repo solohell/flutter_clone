@@ -1,3 +1,4 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flo_app/controller/controller.dart';
 import 'package:flo_app/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +12,8 @@ class PlayInfo extends StatelessWidget {
     final Controller c = Get.put(Controller());
     String imageUrl = c.song.value.image;
     final lyrics = c.song.value.lyrics;
-    final duration = c.song.value.duration;
-    print(lyrics);
-    print(duration);
+    String song = c.song.value.file;
+    bool playStat = c.playStatus.value;
     return Column(
       children: [
         Row(
@@ -76,8 +76,10 @@ class PlayInfo extends StatelessWidget {
               color: Colors.white,
             ),
             IconButton(
-              onPressed: () => {},
-              icon: const Icon(Icons.play_arrow),
+              onPressed: () => Play(playStat, song),
+              icon: playStat
+                  ? const Icon(Icons.pause)
+                  : const Icon(Icons.play_arrow),
               iconSize: 45,
               color: Colors.white,
             ),
@@ -97,6 +99,14 @@ class PlayInfo extends StatelessWidget {
         )
       ],
     );
+  }
+
+  void Play(bool playStat, String song) {
+    final assetsAudioPlayer = AssetsAudioPlayer();
+
+    playStat = !playStat;
+    print(playStat);
+    // assetsAudioPlayer.open(Audio.network(song));
   }
   //   Widget slider(BuildContext context){
   //   return SliderTheme(
