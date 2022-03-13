@@ -1,19 +1,20 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flo_app/controller/controller.dart';
 import 'package:flo_app/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class PlayInfo extends StatelessWidget {
-  const PlayInfo({Key? key}) : super(key: key);
+import 'lyricsParse.dart';
 
+class PlayInfo extends StatelessWidget {
+  final Controller c = Get.put(Controller());
   @override
   Widget build(BuildContext context) {
-    final Controller c = Get.put(Controller());
     String imageUrl = c.song.value.image;
     final lyrics = c.song.value.lyrics;
     String song = c.song.value.file;
-    bool playStat = c.playStatus.value;
+    // AudioPlayer audioPlayer = c.audioplayer.value;
+    lyricsParse(lyrics);
     return Column(
       children: [
         Row(
@@ -47,17 +48,45 @@ class PlayInfo extends StatelessWidget {
           ),
         ),
         Center(
-            child: SizedBox(
-          width: 300,
-          height: 300,
-          child: Image(
-            image: NetworkImage(imageUrl),
+            child: imageUrl.isNotEmpty
+                ? SizedBox(
+                    width: 300,
+                    height: 300,
+                    child: Image(
+                      image: NetworkImage(imageUrl),
+                    ),
+                  )
+                : const SizedBox(
+                    width: 300,
+                    height: 300,
+                  )),
+        const Center(
+          child: SizedBox(
+            height: 40,
           ),
-        )),
+        ),
         SizedBox(
-          height: 90,
+          height: 70,
           child: Column(
-            children: const [],
+            children: <Widget>[
+              slider(context),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  // paddingOnly(left: 10),
+                  const Padding(padding: EdgeInsets.only(left: 20)),
+                  Obx((() => Text(
+                        c.currentplayTime.value,
+                        style: Style.songTime,
+                      ))),
+                  const Padding(padding: EdgeInsets.only(left: 290)),
+                  Obx((() => Text(
+                        c.maxdurationPlayTime.value,
+                        style: Style.songTime,
+                      ))),
+                ],
+              )
+            ],
           ),
         ),
         Row(
@@ -75,13 +104,15 @@ class PlayInfo extends StatelessWidget {
               iconSize: 45,
               color: Colors.white,
             ),
-            IconButton(
-              onPressed: () => Play(playStat, song),
-              icon: playStat
-                  ? const Icon(Icons.pause)
-                  : const Icon(Icons.play_arrow),
-              iconSize: 45,
-              color: Colors.white,
+            Obx(
+              () => IconButton(
+                onPressed: () => c.playStatus.value ? stop() : play(song),
+                icon: c.playStatus.value
+                    ? const Icon(Icons.pause)
+                    : const Icon(Icons.play_arrow),
+                iconSize: 45,
+                color: Colors.white,
+              ),
             ),
             IconButton(
               onPressed: () => {},
@@ -101,24 +132,68 @@ class PlayInfo extends StatelessWidget {
     );
   }
 
-  void Play(bool playStat, String song) {
-    final assetsAudioPlayer = AssetsAudioPlayer();
-
-    playStat = !playStat;
-    print(playStat);
-    // assetsAudioPlayer.open(Audio.network(song));
+  void play(String song) async {
+    AudioPlayer audioPlayer = c.audioplayer.value;
+    c.playStatus.value = !c.playStatus.value;
+    try {
+      int result = await audioPlayer.play(song);
+      if (result == 1) {
+        audioPlayer.onDurationChanged.listen((event) {
+          // c.playTime.value = event.inMilliseconds;
+        });
+        audioPlayer.onDurationChanged.listen((Duration event) {
+          c.maxduration.value = event.inMilliseconds;
+          int shours = Duration(milliseconds: c.maxduration.value).inHours;
+          int sminutes = Duration(milliseconds: c.maxduration.value).inMinutes;
+          int sseconds = Duration(milliseconds: c.maxduration.value).inSeconds;
+          int rhours = shours;
+          int rminutes = sminutes - (shours * 60);
+          int rseconds = sseconds - (sminutes * 60 + shours * 60 * 60);
+          c.maxdurationPlayTime.value = "$rminutes:$rseconds";
+        });
+        audioPlayer.onAudioPositionChanged.listen((Duration event) {
+          c.playTime.value = event.inMilliseconds;
+          int shours = Duration(milliseconds: c.playTime.value).inHours;
+          int sminutes = Duration(milliseconds: c.playTime.value).inMinutes;
+          int sseconds = Duration(milliseconds: c.playTime.value).inSeconds;
+          int rhours = shours;
+          int rminutes = sminutes - (shours * 60);
+          int rseconds = sseconds - (sminutes * 60 + shours * 60 * 60);
+          c.currentplayTime.value =
+              "${rminutes.toString().padLeft(2, '0')}:${rseconds.toString().padLeft(2, '0')}";
+        });
+      }
+    } catch (t) {}
   }
-  //   Widget slider(BuildContext context){
-  //   return SliderTheme(
-  //     data: SliderTheme.of(context).copyWith(
-  //       activeTrackColor: Colors.deepPurple.shade800,
-  //       inactiveTrackColor: Colors.grey.shade700,
-  //       trackHeight: 3.0,
-  //     ),
-  //     child: Slider(
-  //       // value: ,
-  //       onChanged: (value) => seekToSec(value.toInt());
-  //     ),
-  //   )
-  // }
+
+  void stop() async {
+    AudioPlayer audioPlayer = c.audioplayer.value;
+    c.playStatus.value = !c.playStatus.value;
+    try {
+      await audioPlayer.stop();
+    } catch (t) {}
+  }
+
+  Widget slider(BuildContext context) {
+    const Duration currentValue = Duration();
+    final int playtime = currentValue.inMilliseconds;
+    return SliderTheme(
+        data: SliderTheme.of(context).copyWith(
+            activeTrackColor: Colors.deepPurple.shade800,
+            inactiveTrackColor: Colors.grey.shade700,
+            trackHeight: 3.0,
+            thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 0.0)),
+        child: Obx(
+          () => Slider.adaptive(
+              value: c.playTime.value.toDouble(),
+              max: c.maxduration.value.toDouble(),
+              onChanged: (value) => seekToSec(value.toInt())),
+        ));
+  }
+
+  void seekToSec(int sec) {
+    AudioPlayer audioPlayer = c.audioplayer.value;
+    Duration newPos = Duration(milliseconds: sec);
+    audioPlayer.seek(newPos);
+  }
 }
