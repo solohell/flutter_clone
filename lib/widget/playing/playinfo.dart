@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'lyricsParse.dart';
+import 'lyricsView.dart';
 
 class PlayInfo extends StatelessWidget {
   final Controller c = Get.put(Controller());
@@ -15,6 +16,7 @@ class PlayInfo extends StatelessWidget {
     String song = c.song.value.file;
     // AudioPlayer audioPlayer = c.audioplayer.value;
     lyricsParse(lyrics);
+
     return Column(
       children: [
         Row(
@@ -60,9 +62,12 @@ class PlayInfo extends StatelessWidget {
                     width: 300,
                     height: 300,
                   )),
-        const Center(
+        Center(
           child: SizedBox(
             height: 40,
+            child: ListView(
+              children: [LyricsView()],
+            ),
           ),
         ),
         SizedBox(

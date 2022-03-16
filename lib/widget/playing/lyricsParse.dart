@@ -1,8 +1,12 @@
+import 'package:get/get.dart';
+
+import '../../controller/controller.dart';
+
 void lyricsParse(String lyrics) {
+  final Controller controller = Get.put(Controller());
   List lyrcisLsit = lyrics.split('\n');
-  // print(lyrcisLsit);
   final exp = RegExp(r'[0-9]{2,3}:{0,1}');
-  final lyricsDict = [{}];
+  final Map<double, String> lyricsDict = {};
   for (final line in lyrcisLsit) {
     final match = exp.allMatches(line);
     final times = match.map((x) => x.group(0).toString()).join();
@@ -13,6 +17,7 @@ void lyricsParse(String lyrics) {
     double timekey = minutes * 60.0 + seconds + millisec / 1000.0;
     final lyrics = line.split(']')[1];
     // lyricsDict.add(lyrics);
-    print(timekey);
+    lyricsDict[timekey] = lyrics;
+    controller.lyrics.value = lyricsDict;
   }
 }
