@@ -14,7 +14,6 @@ class PlayInfo extends StatelessWidget {
     String imageUrl = c.song.value.image;
     final lyrics = c.song.value.lyrics;
     String song = c.song.value.file;
-    // AudioPlayer audioPlayer = c.audioplayer.value;
     lyricsParse(lyrics);
 
     return Column(
@@ -66,7 +65,7 @@ class PlayInfo extends StatelessWidget {
           child: SizedBox(
             height: 40,
             child: ListView(
-              children: [LyricsView()],
+              children: const [LyricsView()],
             ),
           ),
         ),
@@ -75,22 +74,23 @@ class PlayInfo extends StatelessWidget {
           child: Column(
             children: <Widget>[
               slider(context),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  // paddingOnly(left: 10),
-                  const Padding(padding: EdgeInsets.only(left: 20)),
-                  Obx((() => Text(
-                        c.currentplayTime.value,
-                        style: Style.songTime,
-                      ))),
-                  const Padding(padding: EdgeInsets.only(left: 290)),
-                  Obx((() => Text(
+              Obx((() => Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      // paddingOnly(left: 10),
+                      Container(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Text(
+                            c.currentplayTime.value,
+                            style: Style.songTime,
+                          )),
+                      const Padding(padding: EdgeInsets.only(left: 290)),
+                      Text(
                         c.maxdurationPlayTime.value,
                         style: Style.songTime,
-                      ))),
-                ],
-              )
+                      ),
+                    ],
+                  )))
             ],
           ),
         ),
@@ -151,7 +151,6 @@ class PlayInfo extends StatelessWidget {
           int shours = Duration(milliseconds: c.maxduration.value).inHours;
           int sminutes = Duration(milliseconds: c.maxduration.value).inMinutes;
           int sseconds = Duration(milliseconds: c.maxduration.value).inSeconds;
-          int rhours = shours;
           int rminutes = sminutes - (shours * 60);
           int rseconds = sseconds - (sminutes * 60 + shours * 60 * 60);
           c.maxdurationPlayTime.value = "$rminutes:$rseconds";
@@ -161,7 +160,6 @@ class PlayInfo extends StatelessWidget {
           int shours = Duration(milliseconds: c.playTime.value).inHours;
           int sminutes = Duration(milliseconds: c.playTime.value).inMinutes;
           int sseconds = Duration(milliseconds: c.playTime.value).inSeconds;
-          int rhours = shours;
           int rminutes = sminutes - (shours * 60);
           int rseconds = sseconds - (sminutes * 60 + shours * 60 * 60);
           c.currentplayTime.value =

@@ -19,6 +19,8 @@ class Controller extends GetxController {
   var currentplayTime = "00:00".obs;
   var maxduration = 100.obs;
   var maxdurationPlayTime = "00:00".obs;
+  List lyricsTimes = [].obs;
+  var currentLyricsIndex = 0.obs;
   var lyrics = {}.obs;
   get title => null;
 }
