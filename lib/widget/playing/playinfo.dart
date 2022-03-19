@@ -29,7 +29,7 @@ class PlayInfo extends StatelessWidget {
           ],
         ),
         const SizedBox(
-          height: 80,
+          height: 40,
         ),
         Center(
           child: Obx(
@@ -51,21 +51,49 @@ class PlayInfo extends StatelessWidget {
         Center(
             child: imageUrl.isNotEmpty
                 ? SizedBox(
-                    width: 300,
-                    height: 300,
+                    width: 250,
+                    height: 250,
                     child: Image(
                       image: NetworkImage(imageUrl),
                     ),
                   )
                 : const SizedBox(
-                    width: 300,
-                    height: 300,
+                    width: 250,
+                    height: 250,
                   )),
         Center(
           child: SizedBox(
-            height: 40,
+            height: 50,
             child: ListView(
               children: const [LyricsView()],
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 60,
+          child: Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                    onPressed: () => c.likeStatus.value = !c.likeStatus.value,
+                    splashRadius: Material.defaultSplashRadius / 2,
+                    icon: Obx((() => c.likeStatus.value
+                        ? const Icon(
+                            Icons.favorite,
+                            color: Colors.white,
+                          )
+                        : const Icon(
+                            Icons.favorite_border,
+                            color: Colors.white,
+                          )))),
+                IconButton(
+                  onPressed: () => {},
+                  splashRadius: Material.defaultSplashRadius / 2,
+                  icon: const Icon(Icons.do_not_disturb_alt),
+                  color: Colors.white,
+                ),
+              ],
             ),
           ),
         ),

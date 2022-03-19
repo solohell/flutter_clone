@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flo_app/styles/styles.dart';
+import 'package:flo_app/widget/lyrics/lyricsDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -34,20 +35,27 @@ class _LyricsViewState extends State<LyricsView> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          child: Text(
-            currentLyrics,
-            style: Style.currentLyrics,
+    return GestureDetector(
+      onTap: (() => (lyricsPageMove())),
+      child: Column(
+        children: [
+          Container(
+            child: Text(
+              currentLyrics,
+              style: Style.currentLyrics,
+            ),
           ),
-        ),
-        Text(
-          nextLyrics,
-          style: Style.nextLyrics,
-        ),
-      ],
+          Text(
+            nextLyrics,
+            style: Style.nextLyrics,
+          ),
+        ],
+      ),
     );
+  }
+
+  void lyricsPageMove() {
+    Get.to(() => const LyricsPage());
   }
 
   int getTimeStamp(String time) {

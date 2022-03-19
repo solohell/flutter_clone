@@ -13,6 +13,7 @@ class Controller extends GetxController {
     file: 'file',
     lyrics: 'file',
   ).obs;
+  var likeStatus = false.obs;
   var playStatus = false.obs;
   var playTime = 0.obs;
   var audioplayer = AudioPlayer().obs;
