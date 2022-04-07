@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flo_app/screens/play_song.dart';
+import 'package:flo_app/screens/Main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,7 +16,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     Timer(const Duration(milliseconds: 2000), () {
-      Get.to(() => const PlayView());
+      Get.to(() => const MainPage());
     });
   }
 
