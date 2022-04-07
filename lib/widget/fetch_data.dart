@@ -15,7 +15,6 @@ class FecthData {
     if (response.statusCode == 200) {
       Song list = Song.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
       controller.song.value = list;
-      return list;
     } else {
       throw Exception('Failed to load post');
     }

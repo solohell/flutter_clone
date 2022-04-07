@@ -26,9 +26,9 @@ class _LyricsViewState extends State<LyricsView> {
         String duration = event.toString().substring(2, 11);
         int currentTime = getTimeStamp(duration);
         int getNextLyricsIndex = getNextLyricIndex(currentTime);
-        c.currentLyricsIndex.value = getNextLyricsIndex - 1; //가사 전체 보기를 위한 변수
         currentLyrics = getLyricsString(getNextLyricsIndex - 1);
         nextLyrics = getLyricsString(getNextLyricsIndex);
+        c.currentLyricsIndex.value = getNextLyricsIndex - 1; //가사 전체 보기를 위한 변수
       });
     });
   }
@@ -68,7 +68,7 @@ class _LyricsViewState extends State<LyricsView> {
 
   String getLyricsString(int index) {
     final list = c.lyricsTimes;
-    if (index < 0 || index >= list.length) {
+    if (index < 0) {
       return '';
     }
     int key = list[index];

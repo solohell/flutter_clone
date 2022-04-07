@@ -16,7 +16,6 @@ void lyricsParse(String lyrics) {
     int millisec = int.parse(splitedTime[2]);
     int timekey = (minutes * 60 * 1000) + (seconds * 1000) + millisec;
     final lyrics = line.split(']')[1];
-    // lyricsDict.add(lyrics);
     lyricsDict[timekey] = lyrics;
     controller.lyrics.value = lyricsDict;
     controller.lyricsTimes.add(timekey);

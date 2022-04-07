@@ -29,7 +29,7 @@ class PlayInfo extends StatelessWidget {
           ],
         ),
         const SizedBox(
-          height: 40,
+          height: 20,
         ),
         Center(
           child: Obx(
@@ -105,7 +105,6 @@ class PlayInfo extends StatelessWidget {
               Obx((() => Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      // paddingOnly(left: 10),
                       Container(
                           padding: const EdgeInsets.only(left: 20),
                           child: Text(
@@ -171,9 +170,6 @@ class PlayInfo extends StatelessWidget {
     try {
       int result = await audioPlayer.play(song);
       if (result == 1) {
-        audioPlayer.onDurationChanged.listen((event) {
-          // c.playTime.value = event.inMilliseconds;
-        });
         audioPlayer.onDurationChanged.listen((Duration event) {
           c.maxduration.value = event.inMilliseconds;
           int shours = Duration(milliseconds: c.maxduration.value).inHours;
